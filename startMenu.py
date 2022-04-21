@@ -18,7 +18,9 @@ class startMenuClass:
         self.atualiza()
 
     def navega(self,direcao):
+        print(direcao)
         if direcao == "up":
+            print("apertei up")
             posi = 0
             for i in self.selecionado:
                 if self.selecionado[i] == True:
@@ -30,9 +32,19 @@ class startMenuClass:
             else:
                 self.selecionado[posi+1]=True
         else:
-            pass
+            print("apertei down")
+            posi=0
+            for i in self.selecionado:
+                if self.selecionado[i] == True:
+                    posi = i
+                    self.selecionado[i] = False
 
-        print(self.selecionado)
+            if posi == 0:
+                self.selecionado[int(len(self.selecionado)-1)] = True
+            else:
+                self.selecionado[posi-1]=True
+
+    
         self.apagaTela()
         self.render()
         
@@ -50,8 +62,14 @@ class startMenuClass:
 
             
     def acaoTeclado(self,tecla):
+        print("entrei aqui pra ver a tecla")
+        print(tecla)
         if tecla == "w":
             self.navega("up")
+
+        if tecla == "s":
+            self.navega("down")
+        
     
     def __init__(self, lib, tela, atualiza,screenSize):
         self.telaGame = tela

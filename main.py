@@ -1,25 +1,38 @@
-from tracemalloc import start
 import pygame, sys
 from startMenu import startMenuClass as stMenu
 from dez_numeros import dezNumeros
+from corCerta import Cor_certa
+import random
+
 pygame.init()
 
 
-def atualizaTela():
-    pygame.display.update()
+class mainController:
+    def __init__(self):
+        self.screenSize = [500,500]
+        self.screen = pygame.display.set_mode(self.screenSize)
+
+        self.startMenu_screen = stMenu(pygame, self.screen, self.atualizaTela, self.screenSize) 
+        self.jogando = False
+        self.tela = "start_menu"
+        self.minigames = [dezNumeros(pygame,self.screen,self.screenSize,self.atualizaTela,self.endMinigame),Cor_certa(pygame,self.screen,self.screenSize,self.atualizaTela,self.endMinigame)]
+        self.minigameDaVez = 0
+
+        
 
 
-screenSize = [500,500]
-screen = pygame.display.set_mode(screenSize)
+    def atualizaTela(self):
+        pygame.display.update()
 
-startMenu_screen = stMenu(pygame, screen, atualizaTela, screenSize) 
-jogando = False
-tela = "start_menu"
-minigames = [dezNumeros(pygame,screen,screenSize,atualizaTela)]
-minigameDaVez = 0
+    def endMinigame(self):
+        self.startMenu_screen.apagaTela()
+        self.jogando=False
+        #self.startMenu_screen.render()
+        mainGameControler.jogando = True
+        mainGameControler.minigameDaVez = random.randint(0,1)
 
 
-
+mainGameControler = mainController()
 
 
 while 1:
@@ -28,21 +41,26 @@ while 1:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                startMenu_screen.acaoTeclado(chr(event.key))
-
-            if jogando:
+                mainGameControler.startMenu_screen.acaoTeclado(chr(event.key))
+            if event.key == pygame.K_s:
+                mainGameControler.startMenu_screen.acaoTeclado(chr(event.key))
+            
+            if mainGameControler.jogando:
                 try:
-                    minigames[minigameDaVez].acaoTeclado(chr(event.key))
+                    mainGameControler.minigames[mainGameControler.minigameDaVez].acaoTeclado(chr(event.key))
 
                 except:
                     print("erro")
             if event.key == pygame.K_1:
-                if startMenu_screen.seleciona() == "JOGAR":
-                    startMenu_screen.apagaTela()
-                    jogando = True
-                    minigameDaVez = 0
+                if mainGameControler.startMenu_screen.seleciona() == "JOGAR":
+                    mainGameControler.startMenu_screen.apagaTela()
+                    mainGameControler.jogando = True
+                    #mainGameControler.minigameDaVez = random.randint(0,1)
+                    mainGameControler.minigameDaVez = 1                    
+           
                     
-    if jogando:
-        minigames[minigameDaVez].tick()
+    if mainGameControler.jogando:
+
+        mainGameControler.minigames[mainGameControler.minigameDaVez].tick()
 
   
