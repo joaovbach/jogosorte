@@ -22,14 +22,17 @@ class dezNumeros:
         
 
     def render(self):
-        posix = 0
+        posix = 50
         posiy = 0
         for i in range(0,10):
             self.lib.draw.rect(self.telaGame,[255,255,255],[posix,posiy,self.tamanhoBotaoNumeros[0],self.tamanhoBotaoNumeros[1]])
             font = self.lib.font.Font('freesansbold.ttf', 32)
             text = font.render(str(i), True, [255,0,255])
             self.telaGame.blit(text,[posix,posiy])
-            posiy+=100
+            posix+=75
+            if posix >= 500:
+                posix = 50
+                posiy += 75
 
         self.lib.draw.rect(self.telaGame,[255,255,0],[self.posicaoTexto_numeroCorreto[0],self.posicaoTexto_numeroCorreto[1],50,50])
         font = self.lib.font.Font('freesansbold.ttf', 32)
